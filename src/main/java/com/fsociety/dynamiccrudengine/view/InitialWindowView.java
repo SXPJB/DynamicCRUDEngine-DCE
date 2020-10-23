@@ -29,23 +29,11 @@ public class InitialWindowView extends JFrame implements ActionListener {
 
      public InitialWindowView() {
          super();
-         configuratorWindows();
+         Constant.configuratorWindows(this);
          initialComponents();
          downloadManagerController=new DownloadManagerController();
      }
 
-     //This method configure window
-     public void configuratorWindows(){
-         this.setTitle("Dynamic CRUD Engine");
-         this.setLocationRelativeTo(null);
-         this.setLayout(null);
-         this.setResizable(false);
-         this.setSize(Constant.widthWindow,Constant.heightWindow);
-         this.getContentPane().setBackground(Constant.backgroundColor);
-         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-         this.setLocationRelativeTo(getParent());
-
-     }
      //This method creates and configures the form components
      public void initialComponents(){
          titleLabel=new JLabel();
@@ -179,7 +167,8 @@ public class InitialWindowView extends JFrame implements ActionListener {
                  if(intput== JOptionPane.YES_OPTION){
                      downloadManagerController.downloadProjectZip(
                              new Project(nameProjectTextField.getText().replace(" ",""), groupIdTextField.getText().replace(" ",""),
-                                     artifactIdTextField.getText().replace(" ",""), versionTextField.getText().replace(" ",""), descriptionTextField.getText().replace(" ",""), namePackageTextField.getText().replace(" ","")));
+                                     artifactIdTextField.getText().replace(" ",""), versionTextField.getText().replace(" ",""),
+                                     descriptionTextField.getText(), namePackageTextField.getText().replace(" ","")));
                      DataBaseConnectionView dataBaseConnectionView=new DataBaseConnectionView();
                      dataBaseConnectionView.setLocationRelativeTo(this.getParent());
                      dataBaseConnectionView.setVisible(true);
@@ -192,7 +181,6 @@ public class InitialWindowView extends JFrame implements ActionListener {
                  JOptionPane.showMessageDialog(this, validateField(), "Error", JOptionPane.ERROR_MESSAGE);
              }
          }
-
     }
 
     public String validateField(){

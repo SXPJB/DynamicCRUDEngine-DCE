@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Built-By: emman
+Class-Path: . lib/commons-lang3-3.11.jar lib/ant-compress-1.2.jar lib/
+ ant-1.10.9.jar lib/ant-launcher-1.10.9.jar lib/commons-compress-1.4.j
+ ar lib/xz-1.0.jar lib/jackson-databind-2.11.3.jar lib/jackson-annotat
+ ions-2.11.3.jar lib/jackson-core-2.11.3.jar lib/guava-14.0.jar lib/my
+ sql-connector-java-8.0.20.jar lib/protobuf-java-3.6.1.jar
+Build-Jdk: 1.8.0_251
+Created-By: Maven Integration for Eclipse
+Main-Class: com.fsociety.dynamiccrudengine.DynamicCRUDEngine
+

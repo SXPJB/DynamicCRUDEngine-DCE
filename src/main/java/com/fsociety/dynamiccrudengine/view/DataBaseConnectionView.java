@@ -1,12 +1,12 @@
 package com.fsociety.dynamiccrudengine.view;
 
 import com.fsociety.dynamiccrudengine.controller.DataBaseConnectionController;
+import com.fsociety.dynamiccrudengine.model.Table;
 import com.fsociety.dynamiccrudengine.utils.Constant;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 public class DataBaseConnectionView extends JFrame implements ActionListener {
 
@@ -27,20 +27,8 @@ public class DataBaseConnectionView extends JFrame implements ActionListener {
 
     public DataBaseConnectionView(){
         super();
-        configuratorWindows();
+        Constant.configuratorWindows(this);
         initialComponents();
-    }
-
-
-    public void configuratorWindows(){
-        this.setTitle("Dynamic CRUD Engine");
-        this.setLocationRelativeTo(null);
-        this.setLayout(null);
-        this.setResizable(false);
-        this.setSize(Constant.widthWindow,Constant.heightWindow);
-        this.getContentPane().setBackground(Constant.backgroundColor);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
     }
 
     public void initialComponents(){
@@ -79,10 +67,12 @@ public class DataBaseConnectionView extends JFrame implements ActionListener {
         hostTextField=new JTextField();
         hostTextField.setBounds(231,181,341,32);
         hostTextField.setFont(Constant.fontLabels);
+        hostTextField.setText("localhost:3306");
 
         userTextField=new JTextField();
         userTextField.setBounds(231,257,341,32);
         userTextField.setFont(Constant.fontLabels);
+        userTextField.setText("root");
 
         passwordField=new JTextField();
         passwordField.setBounds(231,333,341,32);
@@ -119,7 +109,12 @@ public class DataBaseConnectionView extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(validateField().equals("Exito")){
             DataBaseConnectionController dataBaseConnectionController=new DataBaseConnectionController();
-            dataBaseConnectionController.dataBaseConnection(hostTextField.getText(),userTextField.getText(),passwordField.getText(),databaseTextField.getText());
+            if(!dataBaseConnectionController.dataBaseConnection(hostTextField.getText(),userTextField.getText(),passwordField.getText(),databaseTextField.getText())){
+                return;
+            }
+            this.setVisible(false);
+            TableSelectView tableSelectView=new TableSelectView();
+            tableSelectView.setVisible(true);
         }else {
             UIManager.put("OptionPane.background",Constant.backgroundColor);
             UIManager.put("Panel.background",Constant.backgroundColor);

@@ -1,13 +1,17 @@
 package com.fsociety.dynamiccrudengine.utils;
 
+import com.fsociety.dynamiccrudengine.model.ForagingKey;
+import com.fsociety.dynamiccrudengine.model.Table;
 import org.apache.ant.compress.taskdefs.Unzip;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Utils {
     public static String saveFile(String basepath, String filename, InputStream in) throws FileNotFoundException, IOException {
@@ -79,21 +83,12 @@ public class Utils {
     public static void Descomprimir(String ficheroZip, String directorioSalida) {
         Unzip unzip=new Unzip();
         unzip.setSrc(new File(ficheroZip));
-        File file=new File(directorioSalida);
+        File file=  new File(directorioSalida);
         if (!file.exists()) {
             file.mkdirs();
         }
-        unzip.setDest(new File(directorioSalida));
+        unzip.setDest(file);
         unzip.execute();
-    }
 
-    public static void openBrowserWindows(String url) throws  IOException{
-        Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
-    }
-    public static void openBrowserLinux(String url) throws IOException{
-        Runtime.getRuntime().exec("xdg-open " + url);
-    }
-    public static void openBrowserMacOsx (String url) throws IOException{
-        Runtime.getRuntime().exec("open " + url);
     }
 }
