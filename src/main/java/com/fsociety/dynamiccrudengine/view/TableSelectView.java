@@ -1,5 +1,6 @@
 package com.fsociety.dynamiccrudengine.view;
 
+import com.fsociety.dynamiccrudengine.business.GenerateSourceBusiness;
 import com.fsociety.dynamiccrudengine.controller.TableSelectController;
 import com.fsociety.dynamiccrudengine.model.Table;
 import com.fsociety.dynamiccrudengine.utils.Constant;
@@ -11,7 +12,9 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TableSelectView extends JFrame implements ActionListener {
 
@@ -26,6 +29,7 @@ public class TableSelectView extends JFrame implements ActionListener {
     private JTable jTableSelect;
     private JButton selectButton;
     private JButton removeButton;
+    private JButton  nextButton;
     private DefaultTableModel modelSelect;
     private DefaultTableModel modelAvailable;
 
@@ -91,6 +95,15 @@ public class TableSelectView extends JFrame implements ActionListener {
         scrollPane3=new JScrollPane(jTableSelect);
         scrollPane3.setBounds(376,411,200,188);
 
+        //button
+        nextButton=new JButton();
+        nextButton.setText("Siguiente");
+        nextButton.setFont(Constant.fontLabels);
+        nextButton.setForeground(Constant.colorFont);
+        nextButton.setBackground(Constant.buutonColor);
+        nextButton.setBounds(192,645,216,42);
+        nextButton.addActionListener(this);
+
         this.add(titleLabel);
         this.add(subTitleLabel);
         this.add(titleTableLabel);
@@ -100,6 +113,7 @@ public class TableSelectView extends JFrame implements ActionListener {
         this.add(scrollPane3);
         this.add(selectButton);
         this.add(removeButton);
+        this.add(nextButton);
     }
 
 
@@ -189,7 +203,7 @@ public class TableSelectView extends JFrame implements ActionListener {
         int row=0;
         Object[] tableName=null;
         if(e.getSource()==selectButton){
-            if(jTableSelect.getSelectedRow()==-1){
+            if(jTableAvailable.getSelectedRow()==-1){
                 JOptionPane.showMessageDialog(this,"Requere seleccionar una tabla","Erro",JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
@@ -212,6 +226,10 @@ public class TableSelectView extends JFrame implements ActionListener {
             tableName= new Object[]{jTableSelect.getModel().getValueAt(row, 0)};
             modelSelect.removeRow(row);
             modelAvailable.addRow(tableName);
+        }
+
+        if(e.getSource()==nextButton){
+            tableSelectController.generateSource(modelSelect);
         }
     }
 }

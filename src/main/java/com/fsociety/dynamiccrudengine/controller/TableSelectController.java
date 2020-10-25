@@ -1,15 +1,18 @@
 package com.fsociety.dynamiccrudengine.controller;
 
-import com.fsociety.dynamiccrudengine.business.TableSelectBusiness;
+import com.fsociety.dynamiccrudengine.business.GenerateSourceBusiness;
 
+import javax.swing.table.DefaultTableModel;
 
 public class TableSelectController {
 
-    private TableSelectBusiness tableSelectBusiness;
+    private GenerateSourceBusiness generateSourceBusiness;
 
     public TableSelectController() {
-        this.tableSelectBusiness=new TableSelectBusiness();
+        this.generateSourceBusiness=new GenerateSourceBusiness();
     }
 
-
+    public void generateSource(DefaultTableModel modelTableSelect){
+        this.generateSourceBusiness.generateSource(modelTableSelect);
+    }
 }

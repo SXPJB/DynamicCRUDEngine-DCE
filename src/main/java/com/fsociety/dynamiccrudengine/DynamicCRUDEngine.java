@@ -1,5 +1,6 @@
 package com.fsociety.dynamiccrudengine;
 
+import com.fsociety.dynamiccrudengine.view.DataBaseConnectionView;
 import com.fsociety.dynamiccrudengine.view.InitialWindowView;
 import javax.swing.*;
 

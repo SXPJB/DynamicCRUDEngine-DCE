@@ -1,5 +1,6 @@
 package com.fsociety.dynamiccrudengine.utils;
 
+import com.fsociety.dynamiccrudengine.model.Project;
 import com.fsociety.dynamiccrudengine.model.Table;
 
 import javax.swing.*;
@@ -18,6 +19,7 @@ public class Constant {
     public static final Font fontbutton=new Font("Lato",Font.PLAIN,14);
     public static final Color colorFont=new Color(255,255,255);
     public static Map<String, List<Table>> tablesList=null;
+    public static Project project=null;
 
     public static void configuratorWindows(JFrame jFrame){
         jFrame.setTitle("Dynamic CRUD Engine");

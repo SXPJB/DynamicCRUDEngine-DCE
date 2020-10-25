@@ -64,8 +64,7 @@ public class DataBaseConnectionBusiness {
                         table.getPrimaryKey().setType(resultSet.getString("TYPE_NAME"));
                         table.getPrimaryKey().setAutoincrement(resultSet.getString("IS_AUTOINCREMENT").equals("YES")?true:false);
                     }else{
-                        table.getAttributeList().add(new Attribute(
-                                CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, resultSet.getString("COLUMN_NAME")),
+                        table.getAttributeList().add(new Attribute(resultSet.getString("COLUMN_NAME"),
                                 resultSet.getString("TYPE_NAME")));
                     }
                 }

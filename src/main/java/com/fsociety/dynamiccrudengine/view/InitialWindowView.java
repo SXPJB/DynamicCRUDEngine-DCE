@@ -98,6 +98,7 @@ public class InitialWindowView extends JFrame implements ActionListener {
              }
          });
          groupIdTextField=new JTextField();
+         groupIdTextField.setText("com.ejemplo");
          groupIdTextField.setBounds(231,257,341,32);
          groupIdTextField.setFont(Constant.fontLabels);
          groupIdTextField.addKeyListener(new KeyListener() {
@@ -126,6 +127,7 @@ public class InitialWindowView extends JFrame implements ActionListener {
          namePackageTextField=new JTextField();
          namePackageTextField.setBounds(231,561,341,32);
          namePackageTextField.setFont(Constant.fontLabels);
+         namePackageTextField.setText("com.ejemplo");
 
          //button
          nextButton=new JButton();

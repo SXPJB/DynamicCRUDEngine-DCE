@@ -89,6 +89,56 @@ public class Utils {
         }
         unzip.setDest(file);
         unzip.execute();
+    }
 
+    public static String getFirstLetterToUpperCase(String data){
+        return data.substring(0, 1).toUpperCase() + data.substring(1);
+    }
+    public static String getFirstLetterToLowerCase(String data){
+        return data.substring(0, 1).toLowerCase() + data.substring(1);
+    }
+
+
+    public static String getType(String type){
+        String typeDataJava="";
+        if(type.equals("CHAR")||
+            type.equals("VARCHAR")||
+            type.equals("BINARY")||
+            type.equals("VARBINARY")||
+            type.equals("TINYBLOB")||
+            type.equals("TINYTEXT")||
+            type.equals("BLOB")||
+            type.equals("TEXT")||
+            type.equals("MEDIUMBLOB")||
+            type.equals("MEDIUMTEXT")||
+            type.equals("LONGBLOB")||
+            type.equals("LONGTEX")||
+            type.equals("ENUM")||
+            type.equals("LONGVARCHAR")){
+            typeDataJava="String";
+        }
+        if (type.equals("INT")||
+            type.equals("SMALLINT")||
+            type.equals("MEDIUMINT")||
+            type.equals("INTEGER")) {
+            typeDataJava="Integer";
+        }
+        if(type.equals("BIGINT")){
+            typeDataJava="Long";
+        }
+        if(type.equals("DATE")||
+           type.equals("DATETIME")||
+           type.equals("TIME")||
+           type.equals("YEAR")||
+           type.equals("TIMESTAMP")){
+            typeDataJava="Date";
+        }
+        if(type.equals("DECIMAL")||
+           type.equals("FLOAT")||
+           type.equals("DOUBLE")){
+            typeDataJava="Double";
+        }
+
+        return typeDataJava;
     }
 }
