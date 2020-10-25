@@ -20,6 +20,7 @@ public class Constant {
     public static final Color colorFont=new Color(255,255,255);
     public static Map<String, List<Table>> tablesList=null;
     public static Project project=null;
+    public static String urlConnexion="";
 
     public static void configuratorWindows(JFrame jFrame){
         jFrame.setTitle("Dynamic CRUD Engine");

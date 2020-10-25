@@ -4,6 +4,7 @@ import com.fsociety.dynamiccrudengine.model.Attribute;
 import com.fsociety.dynamiccrudengine.model.ForagingKey;
 import com.fsociety.dynamiccrudengine.model.PrimaryKey;
 import com.fsociety.dynamiccrudengine.model.Table;
+import com.fsociety.dynamiccrudengine.utils.Constant;
 import com.google.common.base.CaseFormat;
 import javax.swing.*;
 import java.sql.*;
@@ -17,8 +18,10 @@ public class DataBaseConnectionBusiness {
     public Connection connectionDataBase(String host,String user,String password,String database){
         Connection connection=null;
         try {
-            connection= DriverManager.getConnection(
-                    "jdbc:mysql://"+host+"/"+database+"?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", user, password);
+            Constant.urlConnexion="jdbc:mysql://"+host+"/"+database+"?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+            Constant.project.setUserDB(user);
+            Constant.project.setPassDB(password);
+            connection= DriverManager.getConnection(Constant.urlConnexion, Constant.project.getUserDB(), Constant.project.getPassDB());
             if(connection==null){
                 throw  new SQLException("Error en la conexcion");
             }

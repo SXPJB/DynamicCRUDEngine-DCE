@@ -64,6 +64,20 @@ public class GenerateSourceBusiness {
                 i++;
             }
 
+            /*
+            * Secion para Endpont
+            *
+            */
+
+
+            folder=new File(path+"\\config");
+            folder.mkdir();
+            generateCorsConfiguration(folder);
+            generateSwaggerConfig(folder);
+            path= Utils.obtenerRutaPorServidor()+"tmp\\"+
+                    Constant.project.getNameProject()+"\\src\\main\\resources";
+            folder=new File(path);
+            generateProperties(folder);
         }catch (Exception e){
 
         }
@@ -341,10 +355,7 @@ public class GenerateSourceBusiness {
              printWriter.println("\t\t\tLOGGER.error(\"Exception: {}\",e);");
              printWriter.println("\t\t}");
              printWriter.println("\t\treturn "+variableName+"List;");
-             printWriter.println("\t}");
-
-             printWriter.println();
-
+             printWriter.println("\t}\n");
              printWriter.println("}");
          }catch (Exception e){
              e.printStackTrace();
@@ -358,7 +369,126 @@ public class GenerateSourceBusiness {
          }
     }
 
-    public void generateCorsConfiguration(){
+    private void generateCorsConfiguration(File folder){
         FileWriter corsConfiguration=null;
+        PrintWriter printWriter=null;
+        try {
+            String className="CorsConfiguration";
+            corsConfiguration=new FileWriter(folder+"\\"+className+".java");
+            printWriter=new PrintWriter(corsConfiguration);
+            printWriter.println("package "+Constant.project.getNamePackage()+".config;");
+            printWriter.println("import org.springframework.context.annotation.Bean;");
+            printWriter.println("import org.springframework.context.annotation.Configuration;");
+            printWriter.println("import org.springframework.web.servlet.config.annotation.CorsRegistry;");
+            printWriter.println("import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;");
+            printWriter.println();
+            printWriter.println("@Configuration");
+            printWriter.println("public class CorsConfiguration {");
+            printWriter.println("\t@Bean");
+            printWriter.println("\tpublic WebMvcConfigurer corsConfigurer() {");
+            printWriter.println("\t\treturn new WebMvcConfigurer() {");
+            printWriter.println("\t\t\t@Override");
+            printWriter.println("\t\t\tpublic void addCorsMappings(CorsRegistry registry) {");
+            printWriter.println("\t\t\t\tregistry.addMapping(\"/**\").allowedOrigins(\"*\");");
+            printWriter.println("\t\t\t}");
+            printWriter.println("\t\t};");
+            printWriter.println("\t}");
+            printWriter.println("}");
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if (null != corsConfiguration)
+                    corsConfiguration.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+    private void generateSwaggerConfig(File folder){
+        FileWriter swaggerConfig=null;
+        PrintWriter printWriter;
+        try {
+            String className="SwaggerConfig";
+            swaggerConfig=new FileWriter(folder+"\\"+className+".java");
+            printWriter=new PrintWriter(swaggerConfig);
+
+            printWriter.println("package "+Constant.project.getNamePackage()+".config;");
+            printWriter.println("import org.springframework.context.annotation.Bean;\n" +
+                    "import org.springframework.context.annotation.Configuration;\n" +
+                    "import springfox.documentation.builders.ApiInfoBuilder;\n" +
+                    "import springfox.documentation.builders.PathSelectors;\n" +
+                    "import springfox.documentation.builders.RequestHandlerSelectors;\n" +
+                    "import springfox.documentation.service.ApiInfo;\n" +
+                    "import springfox.documentation.service.Contact;\n" +
+                    "import springfox.documentation.spi.DocumentationType;\n" +
+                    "import springfox.documentation.spring.web.plugins.Docket;\n" +
+                    "import springfox.documentation.swagger2.annotations.EnableSwagger2;");
+            printWriter.println();
+            printWriter.println("@Configuration");
+            printWriter.println("@EnableSwagger2");
+            printWriter.println("public class SwaggerConfig {");
+            printWriter.println("\t@Bean");
+            printWriter.println("\tpublic Docket api() {");
+            printWriter.println("\t\treturn new Docket(DocumentationType.SWAGGER_2)\n" +
+                    "\t\t\t.select()\n" +
+                    "\t\t\t.apis(RequestHandlerSelectors.any())\n" +
+                    "\t\t\t.paths(PathSelectors.any())\n" +
+                    "\t\t\t.build()\n" +
+                    "\t\t\t.apiInfo(metaData());");
+            printWriter.println("\t}");
+            printWriter.println("\tprivate static ApiInfo metaData() {");
+            printWriter.println("\t\treturn new ApiInfoBuilder()\n" +
+                    "\t\t\t.title(\""+Constant.project.getNameProject()+"\")\n" +
+                    "\t\t\t.description(\""+Constant.project.getDescription()+"\")\n" +
+                    "\t\t\t.version(\""+Constant.project.getVersion()+"\")\n"+
+                    " \t\t\t.build();");
+            printWriter.println("\t}");
+            printWriter.println("}");
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if (null != swaggerConfig)
+                    swaggerConfig.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+    private void generateProperties(File folder){
+        FileWriter applicationProperties=null;
+        PrintWriter printWriter=null;
+        try {
+            applicationProperties=new FileWriter(folder+"\\application.properties");
+            printWriter=new PrintWriter(applicationProperties);
+            printWriter.println("#Configracion de conexcion a base de datos");
+            printWriter.println("spring.datasource.url="+Constant.urlConnexion);
+            printWriter.println("spring.datasource.username="+Constant.project.getUserDB());
+            printWriter.println("spring.datasource.password="+Constant.project.getPassDB());
+            printWriter.println("#Configuracion de log");
+            printWriter.println("logging.level."+Constant.project.getNamePackage()+"=debug");
+            printWriter.println("# Mostrar o no registrar para cada consulta SQL");
+            printWriter.println("spring.jpa.show-sql = true");
+            printWriter.println("# Naming strategy\n" +
+                    "spring.jpa.hibernate.naming-strategy = org.hibernate.cfg.ImprovedNamingStrategy\n" +
+                    "\n" +
+                    "# Use spring.jpa.properties.* for Hibernate native properties (the prefix is\n" +
+                    "# stripped before adding them to the entity manager)\n" +
+                    "\n" +
+                    "# The SQL dialect makes Hibernate generate better SQL for the chosen database\n" +
+                    "spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5Dialect");
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if (null != applicationProperties)
+                    applicationProperties.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
     }
 }

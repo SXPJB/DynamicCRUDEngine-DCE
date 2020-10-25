@@ -7,6 +7,8 @@ public class Project {
     private String version;
     private String description;
     private String namePackage;
+    private String userDB;
+    private String passDB;
 
     public Project() {
     }
@@ -66,5 +68,21 @@ public class Project {
 
     public void setNamePackage(String namePackage) {
         this.namePackage = namePackage;
+    }
+
+    public String getUserDB() {
+        return userDB;
+    }
+
+    public void setUserDB(String userDB) {
+        this.userDB = userDB;
+    }
+
+    public String getPassDB() {
+        return passDB;
+    }
+
+    public void setPassDB(String passDB) {
+        this.passDB = passDB;
     }
 }
