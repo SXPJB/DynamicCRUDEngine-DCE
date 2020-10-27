@@ -1,9 +1,7 @@
 package com.fsociety.dynamiccrudengine.view;
 
 import com.fsociety.dynamiccrudengine.controller.DataBaseConnectionController;
-import com.fsociety.dynamiccrudengine.model.Table;
 import com.fsociety.dynamiccrudengine.utils.Constant;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -5,9 +5,21 @@ import com.fsociety.dynamiccrudengine.model.Table;
 import com.fsociety.dynamiccrudengine.utils.Constant;
 import com.fsociety.dynamiccrudengine.utils.Utils;
 import com.google.common.base.CaseFormat;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,17 +81,22 @@ public class GenerateSourceBusiness {
             *
             */
 
-
             folder=new File(path+"\\config");
             folder.mkdir();
             generateCorsConfiguration(folder);
             generateSwaggerConfig(folder);
+            generateResponseBody(folder);
+            generateUtils(folder);
             path= Utils.obtenerRutaPorServidor()+"tmp\\"+
                     Constant.project.getNameProject()+"\\src\\main\\resources";
             folder=new File(path);
             generateProperties(folder);
+            path= Utils.obtenerRutaPorServidor()+"tmp\\"+
+                    Constant.project.getNameProject()+"\\pom.xml";
+            File file=new File(path);
+            addDependencies(file);
         }catch (Exception e){
-
+            e.printStackTrace();
         }
 
     }
@@ -421,7 +438,6 @@ public class GenerateSourceBusiness {
                     "import springfox.documentation.builders.PathSelectors;\n" +
                     "import springfox.documentation.builders.RequestHandlerSelectors;\n" +
                     "import springfox.documentation.service.ApiInfo;\n" +
-                    "import springfox.documentation.service.Contact;\n" +
                     "import springfox.documentation.spi.DocumentationType;\n" +
                     "import springfox.documentation.spring.web.plugins.Docket;\n" +
                     "import springfox.documentation.swagger2.annotations.EnableSwagger2;");
@@ -491,4 +507,43 @@ public class GenerateSourceBusiness {
             }
         }
     }
+
+    private void addDependencies(File file){
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder;
+        try {
+            dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            Utils.addElement(doc,new String[]{"io.springfox","springfox-swagger2","2.9.2"});
+            Utils.addElement(doc,new String[]{"io.springfox","springfox-swagger-ui","2.9.2"});
+            //write the updated document to file or console
+            doc.getDocumentElement().normalize();
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(file);
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.transform(source, result);
+        } catch (SAXException | ParserConfigurationException | IOException | TransformerException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private void generateUtils(File folder) {
+        FileWriter utils=null;
+        PrintWriter printWriter=null;
+        try {
+
+
+        }catch (Exception e){
+
+        }
+
+    }
+
+    private void generateResponseBody(File folder) {
+
+    }
+
 }

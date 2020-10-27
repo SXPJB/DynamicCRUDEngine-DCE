@@ -6,7 +6,7 @@ import com.fsociety.dynamiccrudengine.utils.Constant;
 
 public class DownloadManagerController {
 
-    private DownloadManagerBusiness downloadManagerBusiness;
+    private final DownloadManagerBusiness downloadManagerBusiness;
 
     public DownloadManagerController(){
         downloadManagerBusiness=new DownloadManagerBusiness();

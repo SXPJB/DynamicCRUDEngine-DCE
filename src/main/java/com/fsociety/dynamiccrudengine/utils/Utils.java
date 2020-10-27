@@ -1,20 +1,18 @@
 package com.fsociety.dynamiccrudengine.utils;
-
-import com.fsociety.dynamiccrudengine.model.ForagingKey;
-import com.fsociety.dynamiccrudengine.model.Table;
 import org.apache.ant.compress.taskdefs.Unzip;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Utils {
-    public static String saveFile(String basepath, String filename, InputStream in) throws FileNotFoundException, IOException {
+    public static String saveFile(String basepath, String filename, InputStream in) throws IOException {
         File folderArchvo = new File(obtenerRutaPorServidor() + basepath);
         if (!folderArchvo.exists()) {
             folderArchvo.mkdirs();
@@ -96,6 +94,29 @@ public class Utils {
     }
     public static String getFirstLetterToLowerCase(String data){
         return data.substring(0, 1).toLowerCase() + data.substring(1);
+    }
+
+    public static void addElement(Document doc, String[] content) {
+        NodeList dependencies = doc.getElementsByTagName("dependencies");
+        Element dependencyNew = null;
+
+        dependencyNew = (Element) dependencies.item(0);
+
+        Element dependency = doc.createElement("dependency");
+        dependency.appendChild(doc.createTextNode(" "));
+        dependencyNew.appendChild(dependency);
+
+        Element group=doc.createElement("groupId");
+        group.appendChild(doc.createTextNode(content[0]));
+        dependency.appendChild(group);
+
+        Element artifactId=doc.createElement("artifactId");
+        artifactId.appendChild(doc.createTextNode(content[1]));
+        dependency.appendChild(artifactId);
+
+        Element version=doc.createElement("version");
+        version.appendChild(doc.createTextNode(content[2]));
+        dependency.appendChild(version);
     }
 
 

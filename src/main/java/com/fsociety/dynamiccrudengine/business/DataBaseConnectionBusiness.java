@@ -65,7 +65,7 @@ public class DataBaseConnectionBusiness {
                 while (resultSet.next()){
                     if(table.getPrimaryKey().getName().equals(resultSet.getString("COLUMN_NAME"))){
                         table.getPrimaryKey().setType(resultSet.getString("TYPE_NAME"));
-                        table.getPrimaryKey().setAutoincrement(resultSet.getString("IS_AUTOINCREMENT").equals("YES")?true:false);
+                        table.getPrimaryKey().setAutoincrement(resultSet.getString("IS_AUTOINCREMENT").equals("YES"));
                     }else{
                         table.getAttributeList().add(new Attribute(resultSet.getString("COLUMN_NAME"),
                                 resultSet.getString("TYPE_NAME")));

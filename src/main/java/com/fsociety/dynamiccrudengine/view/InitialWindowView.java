@@ -24,7 +24,7 @@ public class InitialWindowView extends JFrame implements ActionListener {
     private JTextField namePackageTextField;
     private JButton nextButton;
 
-    private DownloadManagerController downloadManagerController;
+    private final DownloadManagerController downloadManagerController;
 
 
      public InitialWindowView() {

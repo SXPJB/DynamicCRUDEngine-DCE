@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class TableSelectController {
 
-    private GenerateSourceBusiness generateSourceBusiness;
+    private final GenerateSourceBusiness generateSourceBusiness;
 
     public TableSelectController() {
         this.generateSourceBusiness=new GenerateSourceBusiness();
