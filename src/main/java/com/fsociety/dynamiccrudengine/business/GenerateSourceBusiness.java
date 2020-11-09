@@ -76,10 +76,15 @@ public class GenerateSourceBusiness {
                 i++;
             }
 
-            /*
-            * Secion para Endpont
-            *
-            */
+            //Generate Endpoint form tables select
+            i=0;
+            folder=new File(path+"\\endpoint");
+            folder.mkdir();
+            while (i<modelTableSelect.getRowCount()){
+                Table table = tableList.stream().filter(f -> f.getName().equals(modelTableSelect.getValueAt(i,0))).collect(Collectors.toList()).get(0);
+                generateEndpoint(table,folder);
+                i++;
+            }
 
             folder=new File(path+"\\config");
             folder.mkdir();
@@ -239,10 +244,10 @@ public class GenerateSourceBusiness {
             printWriter.println("import java.util.List;");
             printWriter.println("import java.util.Map;");
             printWriter.println("public interface "+className+"Service{");
-            printWriter.println("\tvoid insert("+className+" "+Utils.getFirstLetterToLowerCase(className)+");");
-            printWriter.println("\tvoid update("+type+" "+name+", Map<String,Object> data);");
-            printWriter.println("\tvoid delete("+type+" "+name+");");
-            printWriter.println("\tList<"+className+"> findAll();");
+            printWriter.println("\tvoid insert("+className+" "+Utils.getFirstLetterToLowerCase(className)+") throws Exception;");
+            printWriter.println("\tvoid update("+type+" "+name+", Map<String,Object> data) throws Exception;");
+            printWriter.println("\tvoid delete("+type+" "+name+") throws Exception;");
+            printWriter.println("\tList<"+className+"> findAll() throws Exception;");
             printWriter.println("}");
         } catch (Exception e) {
             e.printStackTrace();
@@ -280,7 +285,7 @@ public class GenerateSourceBusiness {
              printWriter.println("import java.util.List;");
              printWriter.println("import java.util.Map;");
              printWriter.println("import java.util.Optional;");
-             if(table.getAttributeList().stream().filter(f-> Utils.getType(f.getType()).equals("Date")).collect(Collectors.toList()).size()>0){
+             if(table.getAttributeList().stream().filter(f -> Utils.getType(f.getType()).equals("Date")).count() >0){
                  printWriter.println("import java.util.Date;");
              }
              printWriter.println();
@@ -295,18 +300,19 @@ public class GenerateSourceBusiness {
 
              //create method insert
              printWriter.println("\t@Override");
-             printWriter.println("\tpublic void insert("+className+" "+variableName+" ){");
+             printWriter.println("\tpublic void insert("+className+" "+variableName+" ) throws Exception{");
              printWriter.println("\t\tLOGGER.debug(\">>>Insert()->"+variableName+":{}\","+variableName+");");
              printWriter.println("\t\ttry{");
              printWriter.println("\t\t\t"+repository+".save("+variableName+");");
              printWriter.println("\t\t}catch (Exception e){");
              printWriter.println("\t\t\tLOGGER.error(\"Exception: {}\",e);");
+             printWriter.println("\t\t\tthrow new Exception(e);");
              printWriter.println("\t\t}");
-             printWriter.println("}");
+             printWriter.println("\t}");
 
              //create method update
              printWriter.println("\t@Override");
-             printWriter.println("\tpublic void update("+type+" "+name+", Map<String,Object> data){\n");
+             printWriter.println("\tpublic void update("+type+" "+name+", Map<String,Object> data) throws Exception{\n");
              printWriter.println("\t\tLOGGER.debug(\">>>> update->"+ name+": {}, "+variableName+": {}\","+name+",data);");
              printWriter.println("\t\ttry{");
              printWriter.println("\t\t\tOptional<"+className+"> "+variableName+"Optional = "+repository+".findById("+name+");");
@@ -340,12 +346,13 @@ public class GenerateSourceBusiness {
              printWriter.println("\t\t\t"+repository+".save("+variableName+"Optional.get()"+");");
              printWriter.println("\t\t}catch (Exception e){");
              printWriter.println("\t\t\tLOGGER.error(\"Exception: {}\",e);");
+             printWriter.println("\t\t\tthrow new Exception(e);");
              printWriter.println("\t\t}");
              printWriter.println("\t}");
 
              //create method delete
              printWriter.println("\t@Override");
-             printWriter.println("\tpublic void delete("+type+" "+name+"){");
+             printWriter.println("\tpublic void delete("+type+" "+name+") throws Exception{");
              printWriter.println("\t\tLOGGER.debug(\">>>> delete->"+ name+": {}\","+name+");");
              printWriter.println("\t\ttry{");
              printWriter.println("\t\t\tOptional<"+className+"> "+variableName+"Optional = "+repository+".findById("+name+");");
@@ -355,12 +362,13 @@ public class GenerateSourceBusiness {
              printWriter.println("\t\t\t"+repository+".delete("+variableName+"Optional.get()"+");");
              printWriter.println("\t\t}catch (Exception e){");
              printWriter.println("\t\t\tLOGGER.error(\"Exception: {}\",e);");
+             printWriter.println("\t\t\tthrow new Exception(e);");
              printWriter.println("\t\t}");
              printWriter.println("\t}");
 
              //create method finAll
              printWriter.println("\t@Override");
-             printWriter.println("\tpublic List<"+className+"> findAll(){");
+             printWriter.println("\tpublic List<"+className+"> findAll() throws Exception{");
              printWriter.println("\t\tLOGGER.debug(\">>>> findAll <<<<\");");
              printWriter.println("\t\tList<"+className+">"+variableName+"List=null;");
              printWriter.println("\t\ttry{");
@@ -370,7 +378,9 @@ public class GenerateSourceBusiness {
              printWriter.println("\t\t\t}");
              printWriter.println("\t\t}catch (Exception e){");
              printWriter.println("\t\t\tLOGGER.error(\"Exception: {}\",e);");
+             printWriter.println("\t\t\tthrow new Exception(e);");
              printWriter.println("\t\t}");
+             printWriter.println("\t\tLOGGER.debug(\">>>> findAll <<<< "+ variableName+"List: {}\","+variableName+"List);");
              printWriter.println("\t\treturn "+variableName+"List;");
              printWriter.println("\t}\n");
              printWriter.println("}");
@@ -384,6 +394,105 @@ public class GenerateSourceBusiness {
                  e2.printStackTrace();
              }
          }
+    }
+
+    private void generateEndpoint(Table table,File folder){
+        FileWriter classEntity=null;
+        PrintWriter printWriter=null;
+        System.out.println("Se genera Endpoint");
+        try {
+            String className= CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,table.getName());
+            classEntity=new FileWriter(folder+"\\"+className+"Endpoint.java");
+            String service=Utils.getFirstLetterToLowerCase(className)+"Service";
+            String variableName=Utils.getFirstLetterToLowerCase(className);
+            String name=CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, table.getPrimaryKey().getName());
+            String type=Utils.getType(table.getPrimaryKey().getType());
+            printWriter=new PrintWriter(classEntity);
+            printWriter.println("package "+Constant.project.getNamePackage()+".endpoint;\n");
+            printWriter.println("import "+Constant.project.getNamePackage()+".entity."+className+";");
+            printWriter.println("import "+Constant.project.getNamePackage()+".service."+className+"Service;");
+            printWriter.println("import "+Constant.project.getNamePackage()+".config.ResponseBody;\n" +
+                                "import "+Constant.project.getNamePackage()+".config.Utils;\n" +
+                                "import org.slf4j.Logger;\n" +
+                                "import org.slf4j.LoggerFactory;\n" +
+                                "import org.springframework.beans.factory.annotation.Autowired;\n" +
+                                "import org.springframework.http.HttpStatus;\n" +
+                                "import org.springframework.http.ResponseEntity;\n" +
+                                "import org.springframework.web.bind.annotation.*;\n"+
+                                "import java.util.Map;\n"+
+                                "import java.util.List;");
+            printWriter.println("@RestController");
+            printWriter.println("@RequestMapping(\""+variableName+"\")");
+            printWriter.println("public class "+className+"Endpoint{\n");
+            printWriter.println();
+            printWriter.println("\tprivate static final Logger LOGGER = LoggerFactory.getLogger("+className+"Endpoint.class);");
+            printWriter.println();
+            printWriter.println("\t@Autowired");
+            printWriter.println("\tprivate "+className+"Service "+service+";\n");
+            printWriter.println();
+            printWriter.println("\t@PostMapping(\"/insert\")");
+            printWriter.println("\tpublic ResponseEntity<ResponseBody<Void>> insert(@RequestBody "+className+" "+variableName+"){");
+            printWriter.println("\t\tLOGGER.debug(\">>>Insert()->"+variableName+":{}\","+variableName+");");
+            printWriter.println("\t\tResponseEntity<ResponseBody<Void>> response=null;");
+            printWriter.println("\t\ttry{");
+            printWriter.println("\t\t\t"+service+".insert("+variableName+");");
+            printWriter.println("\t\t\tresponse= Utils.<Void>response(HttpStatus.CREATED,\"Se inserto el registro\",null);");
+            printWriter.println("\t\t}catch (Exception e){");
+            printWriter.println("\t\t\tresponse=Utils.<Void>response(HttpStatus.BAD_REQUEST,false,\"No se puedo insertar el registro\",null);");
+            printWriter.println("\t\t}");
+            printWriter.println("\treturn response;");
+            printWriter.println("\t}");
+            printWriter.println();
+            printWriter.println("\t@PostMapping(\"/update/{"+name+"}\")");
+            printWriter.println("\tpublic ResponseEntity<ResponseBody<Void>> update(@PathVariable "+type+" "+name+", @RequestBody Map<String,Object> data){");
+            printWriter.println("\t\tLOGGER.debug(\">>>> update->"+ name+": {}, "+variableName+": {}\","+name+",data);");
+            printWriter.println("\t\tResponseEntity<ResponseBody<Void>> response=null;");
+            printWriter.println("\t\ttry{");
+            printWriter.println("\t\t\t"+service+".update("+name+",data);");
+            printWriter.println("\t\t\tresponse= Utils.<Void>response(HttpStatus.OK,\"Se actualizo el registro\",null);");
+            printWriter.println("\t\t}catch (Exception e){");
+            printWriter.println("\t\t\tresponse=Utils.<Void>response(HttpStatus.BAD_REQUEST,false,\"No se puedo insertar el registro\",null);");
+            printWriter.println("\t\t}");
+            printWriter.println("\treturn response;");
+            printWriter.println("\t}");
+            printWriter.println();
+            printWriter.println("\t@GetMapping(\"/delete/{"+name+"}\")");
+            printWriter.println("\tpublic ResponseEntity<ResponseBody<Void>> delete(@PathVariable "+type+" "+name+"){");
+            printWriter.println("\t\tLOGGER.debug(\">>>> delete->"+ name+": {}\","+name+");");
+            printWriter.println("\t\tResponseEntity<ResponseBody<Void>> response=null;");
+            printWriter.println("\t\ttry{");
+            printWriter.println("\t\t\t"+service+".delete("+name+");");
+            printWriter.println("\t\t\tresponse= Utils.<Void>response(HttpStatus.OK,\"Se actualizo el registro\",null);");
+            printWriter.println("\t\t}catch (Exception e){");
+            printWriter.println("\t\t\tresponse=Utils.<Void>response(HttpStatus.BAD_REQUEST,false,\"No se puedo insertar el registro\",null);");
+            printWriter.println("\t\t}");
+            printWriter.println("\treturn response;");
+            printWriter.println("\t}");
+            printWriter.println();
+            printWriter.println("\t@GetMapping(\"/findAll\")");
+            printWriter.println("\tpublic ResponseEntity<ResponseBody<List<"+className+">>> findAll(){");
+            printWriter.println("\t\tLOGGER.debug(\">>>> findAll <<<<\");");
+            printWriter.println("\t\tResponseEntity<ResponseBody<List<"+className+">>> response=null;");
+            printWriter.println("\t\tList<"+className+">"+variableName+"List=null;");
+            printWriter.println("\t\ttry{");
+            printWriter.println("\t\t\t"+variableName+"List="+service+".findAll();");
+            printWriter.println("\t\t\tresponse=Utils.<List<"+className+">>response(HttpStatus.OK,\"Lista enonctrda\","+variableName+"List);");
+            printWriter.println("\t\t}catch (Exception e){");
+            printWriter.println("\t\t\tresponse=Utils.<List<"+className+">>response(HttpStatus.NOT_FOUND,\"Lista enonctrda\","+variableName+"List);");
+            printWriter.println("\t\t}");
+            printWriter.println("\t\treturn response;");
+            printWriter.println("\t}");
+            printWriter.println("}");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != classEntity)
+                    classEntity.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
     }
 
     private void generateCorsConfiguration(File folder){
@@ -530,19 +639,115 @@ public class GenerateSourceBusiness {
         }
     }
 
+    private void generateResponseBody(File folder) {
+        FileWriter responseBody=null;
+        PrintWriter printWriter=null;
+        try {
+            String className="ResponseBody";
+            responseBody=new FileWriter(folder+"\\"+className+".java");
+            printWriter=new PrintWriter(responseBody);
+            printWriter.println("package "+Constant.project.getNamePackage()+".config;");
+
+            printWriter.println("public class "+className+"<T> {");
+            printWriter.println("\tprivate boolean success;\n" +
+                                "\tprivate  T data;\n" +
+                                "\tprivate String message;");
+            printWriter.println("\tpublic ResponseBody() {\n" +
+                    "\t\tthis.success = true;\n" +
+                    "\t}");
+            printWriter.println("\tpublic ResponseBody(T data) {\n" +
+                    "\t\tthis.success = true;\n" +
+                    "\t\tthis.data = data;\n" +
+                    "\t}");
+            printWriter.println("\tpublic ResponseBody(T data, String message) {\n" +
+                    "\t\tthis.success = true;\n" +
+                    "\t\tthis.data = data;\n" +
+                    "\t\tthis.message = message;\n" +
+                    " \t}");
+            printWriter.println("//false");
+            printWriter.println("\tpublic ResponseBody(boolean success) {\n" +
+                    "\t\tthis.success = success;\n" +
+                    "\t}");
+            printWriter.println("\tpublic ResponseBody(boolean success, T data) {\n" +
+                    "\t\tthis.success = success;\n" +
+                    "\t\tthis.data = data;\n" +
+                    "\t}");
+            printWriter.println("\tpublic ResponseBody(boolean success, T data, String message) {\n" +
+                    "\t\tthis.success = success;\n" +
+                    "\t\tthis.data = data;\n" +
+                    "\t\tthis.message = message;\n" +
+                    "\t}");
+            printWriter.println(
+                    "\tpublic boolean isSuccess() {\n" +
+                    "\t\treturn success;\n" +
+                    "\t}\n" +
+                    "\n" +
+                    "\tpublic void setSuccess(boolean success) {\n" +
+                    "\t\tthis.success = success;\n" +
+                    "\t}\n" +
+                    "\n" +
+                    "\tpublic T getData() {\n" +
+                    "\t\treturn data;\n" +
+                    "\t}\n" +
+                    "\n" +
+                    "\tpublic void setData(T data) {\n" +
+                    "\t\tthis.data = data;\n" +
+                    "\t}\n" +
+                    "\n" +
+                    "\tpublic String getMessage() {\n" +
+                    "\t\treturn message;\n" +
+                    "\t}\n" +
+                    "\n" +
+                    "\tpublic void setMessage(String message) {\n" +
+                    "\t\tthis.message = message;\n" +
+                    "\t}");
+            printWriter.println("}");
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if (null != responseBody)
+                    responseBody.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
     private void generateUtils(File folder) {
         FileWriter utils=null;
         PrintWriter printWriter=null;
         try {
-
-
+            String className="Utils";
+            utils=new FileWriter(folder+"\\"+className+".java");
+            printWriter=new PrintWriter(utils);
+            printWriter.println("package "+Constant.project.getNamePackage()+".config;");
+            printWriter.println("import org.springframework.http.HttpStatus;\n" +
+                                "import org.springframework.http.ResponseEntity;");
+            printWriter.println("public class "+className+"{\n");
+            printWriter.println("\t//true\n" +
+                                "\tpublic static <T> ResponseEntity<ResponseBody<T>> response(HttpStatus status, String msg, T data) { \n");
+            printWriter.println("\t\tResponseBody<T> body = new ResponseBody<>(data,msg);");
+            printWriter.println("\t\treturn new ResponseEntity<>(body, status);" +
+                                "\n" +
+                                "\t}");
+            printWriter.println("\t//false\n" +
+                                "\tpublic static <T> ResponseEntity<ResponseBody<T>> response(HttpStatus status, boolean success, String msg, T data) { \n");
+            printWriter.println("\t\tResponseBody<T> body = new ResponseBody<T>(success, data, msg);");
+            printWriter.println("\t\treturn new ResponseEntity<>(body, status);"+
+                                "\n" +
+                                "\t}");
+            printWriter.println("\n}");
         }catch (Exception e){
-
+            e.printStackTrace();
+        }finally {
+            try {
+                if (null != utils)
+                    utils.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
         }
-
-    }
-
-    private void generateResponseBody(File folder) {
 
     }
 
