@@ -1,9 +1,10 @@
 package com.fsociety.dynamiccrudengine.view;
 
-import com.fsociety.dynamiccrudengine.business.GenerateSourceBusiness;
 import com.fsociety.dynamiccrudengine.controller.TableSelectController;
 import com.fsociety.dynamiccrudengine.model.Table;
 import com.fsociety.dynamiccrudengine.utils.Constant;
+import com.fsociety.dynamiccrudengine.utils.Utils;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -12,9 +13,7 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TableSelectView extends JFrame implements ActionListener {
 
@@ -30,6 +29,7 @@ public class TableSelectView extends JFrame implements ActionListener {
     private JButton selectButton;
     private JButton removeButton;
     private JButton  nextButton;
+    private JButton cancelButton;
     private DefaultTableModel modelSelect;
     private DefaultTableModel modelAvailable;
 
@@ -101,8 +101,16 @@ public class TableSelectView extends JFrame implements ActionListener {
         nextButton.setFont(Constant.fontLabels);
         nextButton.setForeground(Constant.colorFont);
         nextButton.setBackground(Constant.buutonColor);
-        nextButton.setBounds(192,645,216,42);
+        nextButton.setBounds(395,650,165,42);
         nextButton.addActionListener(this);
+
+        cancelButton=new JButton();
+        cancelButton.setText("Cancelar");
+        cancelButton.setFont(Constant.fontLabels);
+        cancelButton.setForeground(Constant.colorFont);
+        cancelButton.setBackground(Constant.buttonColorSecondary);
+        cancelButton.setBounds(40,650,165,42);
+        cancelButton.addActionListener(this);
 
         this.add(titleLabel);
         this.add(subTitleLabel);
@@ -114,6 +122,7 @@ public class TableSelectView extends JFrame implements ActionListener {
         this.add(selectButton);
         this.add(removeButton);
         this.add(nextButton);
+        this.add(cancelButton);
     }
 
 
@@ -144,7 +153,6 @@ public class TableSelectView extends JFrame implements ActionListener {
         JTable jTable=null;
         try {
             String[] columnNames = {"Nombre de la tabla"};
-
             modelSelect = new DefaultTableModel(null, columnNames);
             jTable=new JTable(modelSelect);
             jTable.setBounds(30, 40, 200, 300);
@@ -200,6 +208,10 @@ public class TableSelectView extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        UIManager.put("OptionPane.background",Constant.backgroundColor);
+        UIManager.put("Panel.background",Constant.backgroundColor);
+        UIManager.put("OptionPane.messageForeground",Constant.colorFont);
+
         int row=0;
         Object[] tableName=null;
         if(e.getSource()==selectButton){
@@ -229,7 +241,30 @@ public class TableSelectView extends JFrame implements ActionListener {
         }
 
         if(e.getSource()==nextButton){
-            tableSelectController.generateSource(modelSelect);
+
+            if(modelSelect.getRowCount()==0){
+                JOptionPane.showMessageDialog(this,"Para continuar al menos se requere tener seleccionada una tabla","Erro",JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            int intput=JOptionPane.showOptionDialog(this,"¿Esta seguro de conitnuar?\n Está acción no se puede revertir", "Cuadro de confirmacion",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,null,new Object[]{"Si","No"},"Si");
+            if(intput== JOptionPane.YES_OPTION){
+                tableSelectController.generateSource(modelSelect);
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.showOpenDialog(fileChooser);
+                String rutaOrigien=Utils.obtenerRutaPorServidor()+"tmp"+Utils.obtenerSeparadorRutaPorServidor()+Constant.project.getNameProject();
+                String routeDestin = fileChooser.getSelectedFile().getAbsolutePath()+"\\"+Constant.project.getNameProject()+".zip";
+                Utils.comprimir(rutaOrigien,routeDestin);
+            }
+        }
+        if(e.getSource()==cancelButton){
+            DataBaseConnectionView view=new DataBaseConnectionView();
+            view.setVisible(true);
+            view.setLocationRelativeTo(this.getParent());
+            this.setVisible(false);
         }
     }
 }

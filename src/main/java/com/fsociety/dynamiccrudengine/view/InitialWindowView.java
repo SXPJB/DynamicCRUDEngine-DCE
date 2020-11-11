@@ -155,6 +155,7 @@ public class InitialWindowView extends JFrame implements ActionListener {
          this.add(descriptionTextField);
          this.add(namePackageTextField);
          this.add(nextButton);
+
      }
 
     public void actionPerformed(ActionEvent e) {

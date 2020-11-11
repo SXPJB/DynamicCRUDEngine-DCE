@@ -373,9 +373,6 @@ public class GenerateSourceBusiness {
              printWriter.println("\t\tList<"+className+">"+variableName+"List=null;");
              printWriter.println("\t\ttry{");
              printWriter.println("\t\t\t"+variableName+"List = "+repository+".findAll();");
-             printWriter.println("\t\t\tif("+variableName+"List.isEmpty()){");
-             printWriter.println("\t\t\t\tthrow new Exception(\"No existen datos\");");
-             printWriter.println("\t\t\t}");
              printWriter.println("\t\t}catch (Exception e){");
              printWriter.println("\t\t\tLOGGER.error(\"Exception: {}\",e);");
              printWriter.println("\t\t\tthrow new Exception(e);");

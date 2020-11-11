@@ -1,7 +1,9 @@
 package com.fsociety.dynamiccrudengine.utils;
 import org.apache.ant.compress.taskdefs.Unzip;
+import org.apache.ant.compress.taskdefs.Zip;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.tools.zip.ZipEntry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -10,6 +12,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.Normalizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.zip.ZipOutputStream;
 
 public class Utils {
     public static String saveFile(String basepath, String filename, InputStream in) throws IOException {
@@ -55,6 +60,32 @@ public class Utils {
     public static void eliminarArchivo(String rutaArchivo) throws IOException {
         Files.deleteIfExists(Paths.get(obtenerRutaPorServidor() + rutaArchivo));
     }
+    public static void deleteDirectory(String route)throws IOException{
+        File fileDel=new File(route);
+        if(fileDel.isDirectory()){
+
+            if(fileDel.list().length == 0)
+                fileDel.delete();
+            else{
+
+                for (String temp : fileDel.list()) {
+                    File fileDelete = new File(fileDel, temp);
+                    //recursive delete
+                    deleteDirectory(route);
+                }
+
+                //check the directory again, if empty then delete it
+                if(fileDel.list().length==0)
+                    fileDel.delete();
+
+            }
+
+        }else{
+
+            //if file, then delete it
+            fileDel.delete();
+        }
+    }
 
     public static String obtenerRutaPorServidor() {
         if (SystemUtils.IS_OS_WINDOWS) {
@@ -87,6 +118,64 @@ public class Utils {
         }
         unzip.setDest(file);
         unzip.execute();
+    }
+    public static void comprimir(String directorio,String directorioSalidaZip){
+        ZipOutputStream outputStream = null;
+        try {
+            outputStream = new ZipOutputStream(new FileOutputStream(new File(directorioSalidaZip)));
+            zipFile(outputStream, new File(directorio), "");
+            if (outputStream != null) {
+                outputStream.flush();
+                outputStream.close();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    private static void zipFile(ZipOutputStream output, File file, String basePath) {
+        FileInputStream input = null;
+        try {
+            // file CONTENTS
+            if (file.isDirectory()) {
+                // current CONTENTS lose face in the file table columns
+                File list[] = file.listFiles();
+                basePath = basePath + (basePath.length() == 0 ? "" : "/")
+                        + file.getName();
+                // recursive loop cycle for each file compression
+                for (File f : list) {
+                    zipFile(output, f, basePath);
+                }
+            } else {
+                // Compressed file
+                basePath = (basePath.length() == 0 ? "" : basePath + "/")
+                        + file.getName();
+                // System.out.println(basePath);
+                output.putNextEntry(new ZipEntry(basePath));
+                input = new FileInputStream(file);
+                int readLen = 0;
+                byte[] buffer = new byte[1024 * 8];
+                while ((readLen = input.read(buffer, 0, 1024 * 8)) != -1) {
+                    output.write(buffer, 0, readLen);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            // close the stream
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 
     public static String getFirstLetterToUpperCase(String data){
@@ -161,5 +250,10 @@ public class Utils {
         }
 
         return typeDataJava;
+    }
+    public static void removeTempProject() throws IOException {
+        if(Constant.project!=null){
+            Runtime.getRuntime().exec("rm -r " + obtenerRutaPorServidor());
+        }
     }
 }
