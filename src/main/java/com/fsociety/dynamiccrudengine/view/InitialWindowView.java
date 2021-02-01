@@ -121,6 +121,7 @@ public class InitialWindowView extends JFrame implements ActionListener {
          versionTextField=new JTextField();
          versionTextField.setBounds(231,409,341,32);
          versionTextField.setFont(Constant.fontLabels);
+         versionTextField.setText("0.0.1-SNAPSHOT");
          descriptionTextField=new JTextField();
          descriptionTextField.setBounds(231,485,341,32);
          descriptionTextField.setFont(Constant.fontLabels);
@@ -168,19 +169,20 @@ public class InitialWindowView extends JFrame implements ActionListener {
                          JOptionPane.YES_NO_OPTION,
                          JOptionPane.QUESTION_MESSAGE,null,new Object[]{"Si","No"},"Si");
                  if(intput== JOptionPane.YES_OPTION){
-                     downloadManagerController.downloadProjectZip(
-                             new Project(nameProjectTextField.getText().replace(" ",""), groupIdTextField.getText().replace(" ",""),
-                                     artifactIdTextField.getText().replace(" ",""), versionTextField.getText().replace(" ",""),
-                                     descriptionTextField.getText(), namePackageTextField.getText().replace(" ","")));
-                     DataBaseConnectionView dataBaseConnectionView=new DataBaseConnectionView();
-                     dataBaseConnectionView.setLocationRelativeTo(this.getParent());
-                     dataBaseConnectionView.setVisible(true);
-                     this.setVisible(false);
+                     try {
+                         downloadManagerController.downloadProjectZip(
+                                 new Project(nameProjectTextField.getText().replace(" ",""), groupIdTextField.getText().replace(" ",""),
+                                         artifactIdTextField.getText().replace(" ",""), versionTextField.getText().replace(" ",""),
+                                         descriptionTextField.getText(), namePackageTextField.getText().replace(" ","")));
+                         DataBaseConnectionView dataBaseConnectionView=new DataBaseConnectionView();
+                         dataBaseConnectionView.setLocationRelativeTo(this.getParent());
+                         dataBaseConnectionView.setVisible(true);
+                         this.setVisible(false);
+                     } catch (Exception exception) {
+                         JOptionPane.showMessageDialog(this,"Error al descargar el proyecto\nVerifica tu conexcion", "Error", JOptionPane.ERROR_MESSAGE);
+                     }
                  }
              } else {
-                 UIManager.put("OptionPane.background",Constant.backgroundColor);
-                 UIManager.put("Panel.background",Constant.backgroundColor);
-                 UIManager.put("OptionPane.messageForeground",Constant.colorFont);
                  JOptionPane.showMessageDialog(this, validateField(), "Error", JOptionPane.ERROR_MESSAGE);
              }
          }

@@ -1,13 +1,12 @@
 package com.fsociety.dynamiccrudengine.utils;
+
 import org.apache.ant.compress.taskdefs.Unzip;
-import org.apache.ant.compress.taskdefs.Zip;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.tools.zip.ZipEntry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -48,10 +47,10 @@ public class Utils {
     }
 
     public static String obtenerRutaParaObtenerArchivo(String ruta) {
-        if(ruta.contains("/")){
+        if (ruta.contains("/")) {
             ruta = (ruta.contains("/")) ? ruta.replace("/", Utils.obtenerSeparadorRutaPorServidor()) : ruta;
         }
-        if(ruta.contains("\\")){
+        if (ruta.contains("\\")) {
             ruta = (ruta.contains("\\")) ? ruta.replace("\\", Utils.obtenerSeparadorRutaPorServidor()) : ruta;
         }
         return ruta;
@@ -60,13 +59,14 @@ public class Utils {
     public static void eliminarArchivo(String rutaArchivo) throws IOException {
         Files.deleteIfExists(Paths.get(obtenerRutaPorServidor() + rutaArchivo));
     }
-    public static void deleteDirectory(String route)throws IOException{
-        File fileDel=new File(route);
-        if(fileDel.isDirectory()){
 
-            if(fileDel.list().length == 0)
+    public static void deleteDirectory(String route) throws IOException {
+        File fileDel = new File(route);
+        if (fileDel.isDirectory()) {
+
+            if (fileDel.list().length == 0)
                 fileDel.delete();
-            else{
+            else {
 
                 for (String temp : fileDel.list()) {
                     File fileDelete = new File(fileDel, temp);
@@ -75,12 +75,12 @@ public class Utils {
                 }
 
                 //check the directory again, if empty then delete it
-                if(fileDel.list().length==0)
+                if (fileDel.list().length == 0)
                     fileDel.delete();
 
             }
 
-        }else{
+        } else {
 
             //if file, then delete it
             fileDel.delete();
@@ -110,16 +110,17 @@ public class Utils {
     }
 
     public static void Descomprimir(String ficheroZip, String directorioSalida) {
-        Unzip unzip=new Unzip();
+        Unzip unzip = new Unzip();
         unzip.setSrc(new File(ficheroZip));
-        File file=  new File(directorioSalida);
+        File file = new File(directorioSalida);
         if (!file.exists()) {
             file.mkdirs();
         }
         unzip.setDest(file);
         unzip.execute();
     }
-    public static void comprimir(String directorio,String directorioSalidaZip){
+
+    public static void comprimir(String directorio, String directorioSalidaZip) {
         ZipOutputStream outputStream = null;
         try {
             outputStream = new ZipOutputStream(new FileOutputStream(new File(directorioSalidaZip)));
@@ -138,13 +139,14 @@ public class Utils {
             }
         }
     }
+
     private static void zipFile(ZipOutputStream output, File file, String basePath) {
         FileInputStream input = null;
         try {
             // file CONTENTS
             if (file.isDirectory()) {
                 // current CONTENTS lose face in the file table columns
-                File list[] = file.listFiles();
+                File[] list = file.listFiles();
                 basePath = basePath + (basePath.length() == 0 ? "" : "/")
                         + file.getName();
                 // recursive loop cycle for each file compression
@@ -155,7 +157,6 @@ public class Utils {
                 // Compressed file
                 basePath = (basePath.length() == 0 ? "" : basePath + "/")
                         + file.getName();
-                // System.out.println(basePath);
                 output.putNextEntry(new ZipEntry(basePath));
                 input = new FileInputStream(file);
                 int readLen = 0;
@@ -178,10 +179,11 @@ public class Utils {
         }
     }
 
-    public static String getFirstLetterToUpperCase(String data){
+    public static String getFirstLetterToUpperCase(String data) {
         return data.substring(0, 1).toUpperCase() + data.substring(1);
     }
-    public static String getFirstLetterToLowerCase(String data){
+
+    public static String getFirstLetterToLowerCase(String data) {
         return data.substring(0, 1).toLowerCase() + data.substring(1);
     }
 
@@ -195,64 +197,56 @@ public class Utils {
         dependency.appendChild(doc.createTextNode(" "));
         dependencyNew.appendChild(dependency);
 
-        Element group=doc.createElement("groupId");
+        Element group = doc.createElement("groupId");
         group.appendChild(doc.createTextNode(content[0]));
         dependency.appendChild(group);
 
-        Element artifactId=doc.createElement("artifactId");
+        Element artifactId = doc.createElement("artifactId");
         artifactId.appendChild(doc.createTextNode(content[1]));
         dependency.appendChild(artifactId);
 
-        Element version=doc.createElement("version");
+        Element version = doc.createElement("version");
         version.appendChild(doc.createTextNode(content[2]));
         dependency.appendChild(version);
     }
 
 
-    public static String getType(String type){
-        String typeDataJava="";
-        if(type.equals("CHAR")||
-            type.equals("VARCHAR")||
-            type.equals("BINARY")||
-            type.equals("VARBINARY")||
-            type.equals("TINYBLOB")||
-            type.equals("TINYTEXT")||
-            type.equals("BLOB")||
-            type.equals("TEXT")||
-            type.equals("MEDIUMBLOB")||
-            type.equals("MEDIUMTEXT")||
-            type.equals("LONGBLOB")||
-            type.equals("LONGTEX")||
-            type.equals("ENUM")||
-            type.equals("LONGVARCHAR")){
-            typeDataJava="String";
+    public static String getType(String type) {
+        String typeDataJava = "";
+        if (type.equals("CHAR") ||
+                type.equals("VARCHAR") || type.equals("BINARY") ||
+                type.equals("VARBINARY") || type.equals("TINYBLOB") ||
+                type.equals("TINYTEXT") || type.equals("BLOB") ||
+                type.equals("TEXT") || type.equals("MEDIUMBLOB") ||
+                type.equals("MEDIUMTEXT") || type.equals("LONGBLOB") ||
+                type.equals("LONGTEX") || type.equals("ENUM") ||
+                type.equals("LONGVARCHAR")) {
+            typeDataJava = "String";
         }
-        if (type.equals("INT")||
-            type.equals("SMALLINT")||
-            type.equals("MEDIUMINT")||
-            type.equals("INTEGER")) {
-            typeDataJava="Integer";
+        if (type.equals("INT") || type.equals("SMALLINT") ||
+                type.equals("MEDIUMINT") || type.equals("INTEGER")) {
+            typeDataJava = "Integer";
         }
-        if(type.equals("BIGINT")){
-            typeDataJava="Long";
+        if (type.equals("BIGINT")) {
+            typeDataJava = "Long";
         }
-        if(type.equals("DATE")||
-           type.equals("DATETIME")||
-           type.equals("TIME")||
-           type.equals("YEAR")||
-           type.equals("TIMESTAMP")){
-            typeDataJava="Date";
+        if (type.equals("DATE") || type.equals("DATETIME") ||
+                type.equals("TIME") || type.equals("YEAR") ||
+                type.equals("TIMESTAMP")) {
+            typeDataJava = "Date";
         }
-        if(type.equals("DECIMAL")||
-           type.equals("FLOAT")||
-           type.equals("DOUBLE")){
-            typeDataJava="Double";
+        if (type.equals("DECIMAL") || type.equals("FLOAT") ||
+                type.equals("DOUBLE")) {
+            typeDataJava = "Double";
         }
-
+        if (type.equals("BIT") || type.equals("TINYINT")) {
+            typeDataJava = "Boolean";
+        }
         return typeDataJava;
     }
+
     public static void removeTempProject() throws IOException {
-        if(Constant.project!=null){
+        if (Constant.project != null) {
             Runtime.getRuntime().exec("rm -r " + obtenerRutaPorServidor());
         }
     }

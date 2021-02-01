@@ -12,9 +12,12 @@ public class DownloadManagerController {
         downloadManagerBusiness=new DownloadManagerBusiness();
     }
 
-
-    public void downloadProjectZip(Project project){
-        Constant.project=project;
-        downloadManagerBusiness.downloadProjectZip(project);
+    public void downloadProjectZip(Project project) throws Exception{
+        try {
+            Constant.project=project;
+            downloadManagerBusiness.downloadProjectZip(project);
+        }catch (Exception e){
+            throw new Exception(e);
+        }
     }
 }

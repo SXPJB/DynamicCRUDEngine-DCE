@@ -4,7 +4,7 @@ import com.fsociety.dynamiccrudengine.business.DataBaseConnectionBusiness;
 import com.fsociety.dynamiccrudengine.utils.Constant;
 import javax.swing.*;
 import java.sql.Connection;
-import java.sql.SQLException;
+
 public class DataBaseConnectionController {
 
     private final DataBaseConnectionBusiness dataBaseConnectionBusiness;
@@ -19,7 +19,7 @@ public class DataBaseConnectionController {
         try {
             connection=dataBaseConnectionBusiness.connectionDataBase(host,user,password,database);
             if(connection==null){
-                throw new SQLException("Error de conexion");
+                throw new Exception("Error de conexion");
             }
             UIManager.put("OptionPane.background", Constant.backgroundColor);
             UIManager.put("Panel.background",Constant.backgroundColor);
@@ -30,7 +30,7 @@ public class DataBaseConnectionController {
             System.out.println("Tablas No seleccionable \n"+Constant.tablesList.get("listNoSelect"));
             connection.close();
             connexionSuccess=true;
-        }catch (SQLException e){
+        }catch (Exception e){
             System.out.println("error: "+e.getMessage());
         }
         return connexionSuccess;

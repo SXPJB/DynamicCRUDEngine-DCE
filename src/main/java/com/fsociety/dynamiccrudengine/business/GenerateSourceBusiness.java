@@ -110,7 +110,7 @@ public class GenerateSourceBusiness {
         FileWriter classEntity=null;
         PrintWriter printWriter=null;
         try{
-            System.out.println("Se genero una entitidad");
+
             String className= CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,table.getName());
             classEntity=new FileWriter(folder+"\\"+className+".java");
             printWriter=new PrintWriter(classEntity);
@@ -133,18 +133,18 @@ public class GenerateSourceBusiness {
             printWriter.println("@Table(name= "+"\""+table.getName()+"\""+")");
             printWriter.println("public class "+className+" implements Serializable{ \n");
 
-            printWriter.println("\tpublic "+className+"() {}\n");
-
             //Generate primaryKey
             printWriter.println("\t@Id");
             printWriter.println("\t@GeneratedValue(strategy = GenerationType.IDENTITY)");
             printWriter.println("\t@Column(name = \""+table.getPrimaryKey().getName()+"\")");
-            printWriter.println("\tprivate "+Utils.getType(table.getPrimaryKey().getType())+" "+table.getPrimaryKey().getName()+";");
+            printWriter.println("\tprivate "+Utils.getType(table.getPrimaryKey().getType())+
+            " "+table.getPrimaryKey().getName()+";");
 
             //Generate all attributes
             for (Attribute attribute:table.getAttributeList()) {
                 printWriter.println("\t@Column(name = \""+attribute.getName()+"\")");
-                printWriter.println("\tprivate "+Utils.getType(attribute.getType())+" "+CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, attribute.getName())+";");
+                printWriter.println("\tprivate "+Utils.getType(attribute.getType())
+                +" "+CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, attribute.getName())+";");
             }
             printWriter.println();
 
@@ -339,6 +339,9 @@ public class GenerateSourceBusiness {
                  if(Utils.getType(attribute.getType()).equals("Long")){
                      printWriter.println("\t\t\t\tLong "+attributeName+" = (Long)data.get(\""+attributeName+"\");");
                  }
+                 if(Utils.getType(attribute.getType()).equals("Boolean")) {
+                     printWriter.println("\t\t\t\tBoolean "+attributeName+" = (Boolean)data.get(\""+attributeName+"\");");
+                 }
                  printWriter.println("\t\t\t\t"+variableName+"Optional.get().set"+Utils.getFirstLetterToUpperCase(attributeName)+"("+attributeName+");");
 
                  printWriter.println("\t\t\t}");
@@ -419,7 +422,7 @@ public class GenerateSourceBusiness {
                                 "import java.util.Map;\n"+
                                 "import java.util.List;");
             printWriter.println("@RestController");
-            printWriter.println("@RequestMapping(\""+variableName+"\")");
+            printWriter.println("@RequestMapping(\"/"+variableName+"\")");
             printWriter.println("public class "+className+"Endpoint{\n");
             printWriter.println();
             printWriter.println("\tprivate static final Logger LOGGER = LoggerFactory.getLogger("+className+"Endpoint.class);");
@@ -473,9 +476,9 @@ public class GenerateSourceBusiness {
             printWriter.println("\t\tList<"+className+">"+variableName+"List=null;");
             printWriter.println("\t\ttry{");
             printWriter.println("\t\t\t"+variableName+"List="+service+".findAll();");
-            printWriter.println("\t\t\tresponse=Utils.<List<"+className+">>response(HttpStatus.OK,\"Lista enonctrda\","+variableName+"List);");
+            printWriter.println("\t\t\tresponse=Utils.<List<"+className+">>response(HttpStatus.OK,\"Lista encontrada\","+variableName+"List);");
             printWriter.println("\t\t}catch (Exception e){");
-            printWriter.println("\t\t\tresponse=Utils.<List<"+className+">>response(HttpStatus.NOT_FOUND,\"Lista enonctrda\","+variableName+"List);");
+            printWriter.println("\t\t\tresponse=Utils.<List<"+className+">>response(HttpStatus.NOT_FOUND,\"Lista encontrada\","+variableName+"List);");
             printWriter.println("\t\t}");
             printWriter.println("\t\treturn response;");
             printWriter.println("\t}");

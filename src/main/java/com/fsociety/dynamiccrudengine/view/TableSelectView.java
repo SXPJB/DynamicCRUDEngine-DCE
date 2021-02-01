@@ -3,8 +3,6 @@ package com.fsociety.dynamiccrudengine.view;
 import com.fsociety.dynamiccrudengine.controller.TableSelectController;
 import com.fsociety.dynamiccrudengine.model.Table;
 import com.fsociety.dynamiccrudengine.utils.Constant;
-import com.fsociety.dynamiccrudengine.utils.Utils;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -32,7 +30,6 @@ public class TableSelectView extends JFrame implements ActionListener {
     private JButton cancelButton;
     private DefaultTableModel modelSelect;
     private DefaultTableModel modelAvailable;
-
 
     private final TableSelectController tableSelectController;
 
@@ -97,11 +94,11 @@ public class TableSelectView extends JFrame implements ActionListener {
 
         //button
         nextButton=new JButton();
-        nextButton.setText("Siguiente");
+        nextButton.setText("Generar proyecto");
         nextButton.setFont(Constant.fontLabels);
         nextButton.setForeground(Constant.colorFont);
         nextButton.setBackground(Constant.buutonColor);
-        nextButton.setBounds(395,650,165,42);
+        nextButton.setBounds(375,650,200,42);
         nextButton.addActionListener(this);
 
         cancelButton=new JButton();
@@ -252,12 +249,7 @@ public class TableSelectView extends JFrame implements ActionListener {
                     JOptionPane.QUESTION_MESSAGE,null,new Object[]{"Si","No"},"Si");
             if(intput== JOptionPane.YES_OPTION){
                 tableSelectController.generateSource(modelSelect);
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                fileChooser.showOpenDialog(fileChooser);
-                String rutaOrigien=Utils.obtenerRutaPorServidor()+"tmp"+Utils.obtenerSeparadorRutaPorServidor()+Constant.project.getNameProject();
-                String routeDestin = fileChooser.getSelectedFile().getAbsolutePath()+"\\"+Constant.project.getNameProject()+".zip";
-                Utils.comprimir(rutaOrigien,routeDestin);
+                tableSelectController.saveProject(this);
             }
         }
         if(e.getSource()==cancelButton){

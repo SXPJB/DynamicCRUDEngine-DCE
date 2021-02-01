@@ -2,7 +2,6 @@ package com.fsociety.dynamiccrudengine.utils;
 
 import com.fsociety.dynamiccrudengine.model.Project;
 import com.fsociety.dynamiccrudengine.model.Table;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -25,7 +24,6 @@ public class Constant {
     public static Map<String, List<Table>> tablesList=null;
     public static Project project=null;
     public static String urlConnexion="";
-
     public static void configuratorWindows(JFrame jFrame){
         UIManager.put("OptionPane.background",Constant.backgroundColor);
         UIManager.put("Panel.background",Constant.backgroundColor);

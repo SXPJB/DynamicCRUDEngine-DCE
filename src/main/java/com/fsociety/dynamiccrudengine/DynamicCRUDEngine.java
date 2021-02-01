@@ -1,7 +1,7 @@
 package com.fsociety.dynamiccrudengine;
 
 import com.fsociety.dynamiccrudengine.view.InitialWindowView;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 public class DynamicCRUDEngine {
 
