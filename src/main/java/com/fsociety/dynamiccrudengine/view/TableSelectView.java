@@ -213,7 +213,7 @@ public class TableSelectView extends JFrame implements ActionListener {
         Object[] tableName=null;
         if(e.getSource()==selectButton){
             if(jTableAvailable.getSelectedRow()==-1){
-                JOptionPane.showMessageDialog(this,"Requere seleccionar una tabla","Erro",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,"Requere seleccionar una tabla","Error",JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             row=jTableAvailable.getSelectedRow();
@@ -223,11 +223,11 @@ public class TableSelectView extends JFrame implements ActionListener {
         }
         if(e.getSource()==removeButton){
             if(jTableSelect.getModel().getRowCount()==0){
-                JOptionPane.showMessageDialog(this,"Para remover al menos se requere una tabla seleccionada","Erro",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,"Para remover al menos se requere una tabla seleccionada","Error",JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             if(jTableSelect.getSelectedRow()==-1){
-                JOptionPane.showMessageDialog(this,"Para remover al menos se requere seleccionar una tabla","Erro",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,"Para remover al menos se requere seleccionar una tabla","Error",JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
             row=jTableSelect.getSelectedRow();
@@ -240,7 +240,7 @@ public class TableSelectView extends JFrame implements ActionListener {
         if(e.getSource()==nextButton){
 
             if(modelSelect.getRowCount()==0){
-                JOptionPane.showMessageDialog(this,"Para continuar al menos se requere tener seleccionada una tabla","Erro",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,"Para continuar al menos se requere tener seleccionada una tabla","Error",JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
