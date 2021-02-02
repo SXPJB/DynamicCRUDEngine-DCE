@@ -71,6 +71,16 @@ public class Utils {
         }
         return "";
     }
+    public static String obtenerRutaRaizPorOS() {
+        if (SystemUtils.IS_OS_WINDOWS) {
+            return "C:\\dce";
+        } else if (SystemUtils.IS_OS_LINUX) {
+            return "/dce";
+        } else if (SystemUtils.IS_OS_MAC) {
+            return "/dce";
+        }
+        return "";
+    }
 
     public static String obtenerSeparadorRutaPorServidor() {
         if (SystemUtils.IS_OS_WINDOWS) {
@@ -219,12 +229,19 @@ public class Utils {
         return typeDataJava;
     }
 
-    public static void removeTempProject() throws IOException {
-        if (Constant.project != null) {
-            Runtime.getRuntime().exec("rm -r " + obtenerRutaPorServidor());
-        }else{
-            Runtime.getRuntime().exec("rm -r " + obtenerRutaPorServidor());
-            Constant.project=new Project();
+    private static void removeFolderR(File folder) {
+        if (!folder.exists()) { return; }
+
+        if (folder.isDirectory()) {
+            for (File f : folder.listFiles()) {
+                removeFolderR(f);  }
         }
+        folder.delete();
+    }
+
+    public static void removeTempProject(){
+        String ruta=obtenerRutaRaizPorOS();
+        removeFolderR(new File(ruta));
+        Constant.project=new Project();
     }
 }

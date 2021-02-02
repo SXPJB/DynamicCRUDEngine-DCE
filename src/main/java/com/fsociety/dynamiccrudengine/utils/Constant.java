@@ -44,11 +44,7 @@ public class Constant {
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE,null,new Object[]{"Si","No"},"Si");
                 if(intput== JOptionPane.YES_OPTION){
-                    try {
-                        Utils.removeTempProject();
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
+                    Utils.removeTempProject();
                     System.exit(0);
                 }
             }
