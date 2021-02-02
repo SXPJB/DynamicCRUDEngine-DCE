@@ -4,6 +4,7 @@ import com.fsociety.dynamiccrudengine.controller.DownloadManagerController;
 import com.fsociety.dynamiccrudengine.model.Project;
 import com.fsociety.dynamiccrudengine.utils.Constant;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class InitialWindowView extends JFrame implements ActionListener {
@@ -32,6 +33,7 @@ public class InitialWindowView extends JFrame implements ActionListener {
          Constant.configuratorWindows(this);
          initialComponents();
          downloadManagerController=new DownloadManagerController();
+
      }
 
      //This method creates and configures the form components

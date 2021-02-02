@@ -28,6 +28,8 @@ public class Constant {
         UIManager.put("OptionPane.background",Constant.backgroundColor);
         UIManager.put("Panel.background",Constant.backgroundColor);
         UIManager.put("OptionPane.messageForeground",Constant.colorFont);
+        Image icon=Toolkit.getDefaultToolkit().getImage("C:\\Users\\emman\\OneDrive\\Documentos\\Documentos UATX\\Proyecto-Tesis\\DynamicCRUDEngine\\src\\main\\resources\\image\\logo1.png");
+        jFrame.setIconImage(icon);
         jFrame.setTitle("Dynamic CRUD Engine");
         jFrame.setLocationRelativeTo(null);
         jFrame.setLayout(null);
