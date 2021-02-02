@@ -247,7 +247,7 @@ public class GenerateSourceBusiness {
             printWriter.println("\tvoid insert("+className+" "+Utils.getFirstLetterToLowerCase(className)+") throws Exception;");
             printWriter.println("\tvoid update("+type+" "+name+", Map<String,Object> data) throws Exception;");
             printWriter.println("\tvoid delete("+type+" "+name+") throws Exception;");
-            printWriter.println("\tList<"+className+"> findAll() throws Exception;");
+            printWriter.println("\tList<"+className+"> findAll(int page,int size) throws Exception;");
             printWriter.println("}");
         } catch (Exception e) {
             e.printStackTrace();
@@ -285,6 +285,8 @@ public class GenerateSourceBusiness {
              printWriter.println("import java.util.List;");
              printWriter.println("import java.util.Map;");
              printWriter.println("import java.util.Optional;");
+             printWriter.println("import org.springframework.data.domain.Pageable;");
+             printWriter.println("import org.springframework.data.domain.PageRequest;");
              if(table.getAttributeList().stream().filter(f -> Utils.getType(f.getType()).equals("Date")).count() >0){
                  printWriter.println("import java.util.Date;");
              }
@@ -371,11 +373,12 @@ public class GenerateSourceBusiness {
 
              //create method finAll
              printWriter.println("\t@Override");
-             printWriter.println("\tpublic List<"+className+"> findAll() throws Exception{");
-             printWriter.println("\t\tLOGGER.debug(\">>>> findAll <<<<\");");
+             printWriter.println("\tpublic List<"+className+"> findAll(int page,int size) throws Exception{");
+             printWriter.println("\t\tLOGGER.debug(\">>>> findAll <<<< page: {} size: {}\",page,size);");
              printWriter.println("\t\tList<"+className+">"+variableName+"List=null;");
              printWriter.println("\t\ttry{");
-             printWriter.println("\t\t\t"+variableName+"List = "+repository+".findAll();");
+             printWriter.println("\t\t\t"+"Pageable pageable= PageRequest.of(page,size);");
+             printWriter.println("\t\t\t"+variableName+"List = "+repository+".findAll(pageable).toList();");
              printWriter.println("\t\t}catch (Exception e){");
              printWriter.println("\t\t\tLOGGER.error(\"Exception: {}\",e);");
              printWriter.println("\t\t\tthrow new Exception(e);");
@@ -451,7 +454,7 @@ public class GenerateSourceBusiness {
             printWriter.println("\t\t\t"+service+".update("+name+",data);");
             printWriter.println("\t\t\tresponse= Utils.<Void>response(HttpStatus.OK,\"Se actualizo el registro\",null);");
             printWriter.println("\t\t}catch (Exception e){");
-            printWriter.println("\t\t\tresponse=Utils.<Void>response(HttpStatus.BAD_REQUEST,false,\"No se puedo insertar el registro\",null);");
+            printWriter.println("\t\t\tresponse=Utils.<Void>response(HttpStatus.BAD_REQUEST,false,\"No se puedo actualizar el registro\",null);");
             printWriter.println("\t\t}");
             printWriter.println("\treturn response;");
             printWriter.println("\t}");
@@ -462,20 +465,20 @@ public class GenerateSourceBusiness {
             printWriter.println("\t\tResponseEntity<ResponseBody<Void>> response=null;");
             printWriter.println("\t\ttry{");
             printWriter.println("\t\t\t"+service+".delete("+name+");");
-            printWriter.println("\t\t\tresponse= Utils.<Void>response(HttpStatus.OK,\"Se actualizo el registro\",null);");
+            printWriter.println("\t\t\tresponse= Utils.<Void>response(HttpStatus.OK,\"Se elimino el registro\",null);");
             printWriter.println("\t\t}catch (Exception e){");
-            printWriter.println("\t\t\tresponse=Utils.<Void>response(HttpStatus.BAD_REQUEST,false,\"No se puedo insertar el registro\",null);");
+            printWriter.println("\t\t\tresponse=Utils.<Void>response(HttpStatus.BAD_REQUEST,false,\"No se puedo eliminar el registro\",null);");
             printWriter.println("\t\t}");
             printWriter.println("\treturn response;");
             printWriter.println("\t}");
             printWriter.println();
             printWriter.println("\t@GetMapping(\"/findAll\")");
-            printWriter.println("\tpublic ResponseEntity<ResponseBody<List<"+className+">>> findAll(){");
-            printWriter.println("\t\tLOGGER.debug(\">>>> findAll <<<<\");");
+            printWriter.println("\tpublic ResponseEntity<ResponseBody<List<"+className+">>> findAll(@RequestParam(\"page\") int page,@RequestParam(\"size\") int size){");
+            printWriter.println("\t\tLOGGER.debug(\">>>> findAll <<<< page: {} size: {}\",page,size);");
             printWriter.println("\t\tResponseEntity<ResponseBody<List<"+className+">>> response=null;");
             printWriter.println("\t\tList<"+className+">"+variableName+"List=null;");
             printWriter.println("\t\ttry{");
-            printWriter.println("\t\t\t"+variableName+"List="+service+".findAll();");
+            printWriter.println("\t\t\t"+variableName+"List="+service+".findAll(page,size);");
             printWriter.println("\t\t\tresponse=Utils.<List<"+className+">>response(HttpStatus.OK,\"Lista encontrada\","+variableName+"List);");
             printWriter.println("\t\t}catch (Exception e){");
             printWriter.println("\t\t\tresponse=Utils.<List<"+className+">>response(HttpStatus.NOT_FOUND,\"Lista encontrada\","+variableName+"List);");

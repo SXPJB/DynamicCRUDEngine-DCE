@@ -1,5 +1,6 @@
 package com.fsociety.dynamiccrudengine.utils;
 
+import com.fsociety.dynamiccrudengine.model.Project;
 import org.apache.ant.compress.taskdefs.Unzip;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -58,33 +59,6 @@ public class Utils {
 
     public static void eliminarArchivo(String rutaArchivo) throws IOException {
         Files.deleteIfExists(Paths.get(obtenerRutaPorServidor() + rutaArchivo));
-    }
-
-    public static void deleteDirectory(String route) throws IOException {
-        File fileDel = new File(route);
-        if (fileDel.isDirectory()) {
-
-            if (fileDel.list().length == 0)
-                fileDel.delete();
-            else {
-
-                for (String temp : fileDel.list()) {
-                    File fileDelete = new File(fileDel, temp);
-                    //recursive delete
-                    deleteDirectory(route);
-                }
-
-                //check the directory again, if empty then delete it
-                if (fileDel.list().length == 0)
-                    fileDel.delete();
-
-            }
-
-        } else {
-
-            //if file, then delete it
-            fileDel.delete();
-        }
     }
 
     public static String obtenerRutaPorServidor() {
@@ -248,6 +222,9 @@ public class Utils {
     public static void removeTempProject() throws IOException {
         if (Constant.project != null) {
             Runtime.getRuntime().exec("rm -r " + obtenerRutaPorServidor());
+        }else{
+            Runtime.getRuntime().exec("rm -r " + obtenerRutaPorServidor());
+            Constant.project=new Project();
         }
     }
 }

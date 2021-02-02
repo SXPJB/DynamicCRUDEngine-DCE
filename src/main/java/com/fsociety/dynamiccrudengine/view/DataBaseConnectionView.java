@@ -125,9 +125,6 @@ public class DataBaseConnectionView extends JFrame implements ActionListener {
         if (userTextField.getText() == null || userTextField.getText().isEmpty()) {
             return "El campo \"Usuario\" no puede ir vacio";
         }
-        if (passwordField.getPassword() == null || passwordField.getPassword().length == 0) {
-            return "El campo \"Contraseña\" no puede ir vacio";
-        }
         if (databaseTextField.getText() == null || databaseTextField.getText().isEmpty()) {
             return "El campo \"Base de Datos\" ir vacio";
         }
