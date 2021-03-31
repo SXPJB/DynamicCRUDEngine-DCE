@@ -203,7 +203,7 @@ public class Utils {
                 type.equals("TINYTEXT") || type.equals("BLOB") ||
                 type.equals("TEXT") || type.equals("MEDIUMBLOB") ||
                 type.equals("MEDIUMTEXT") || type.equals("LONGBLOB") ||
-                type.equals("LONGTEX") || type.equals("ENUM") ||
+                type.equals("LONGTEXT") || type.equals("ENUM") ||
                 type.equals("LONGVARCHAR")) {
             typeDataJava = "String";
         }
