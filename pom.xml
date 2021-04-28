@@ -10,7 +10,7 @@
         <jdk.version>1.8</jdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <!--For build is whit nvm clean package-->
+    <!--For build is whit mvn clean package-->
     <build>
         <finalName>DynamicCRUDEngine</finalName>
         <plugins>
