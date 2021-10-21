@@ -3,7 +3,7 @@
 > ## What is Dynamic CRUD Engine?
 >> Dynamic CRUD Engine is a development tool which allows  atack a problem of the software development, which is, repetitive code, since when you create a new software project, time is lost in the creation of the same operation for the management of a catalog of database. In our hypothesis we consider that it is possible to make a system which produce functional code from a database diagram in a semi-automatically way. In this project it is proposed to construct a coding architecture, to carry out a software development to optimize time in the construction and have a tool that produces functional code from a database.
 
->>##Minimum requirements:
+>>## Minimum requirements:
 >>1. JDK 8
 >>2. Windows 10 or superior or Linux (ubuntu,debian,mint,etc)
 >>3. Mysql Server 8 or superior <br>
