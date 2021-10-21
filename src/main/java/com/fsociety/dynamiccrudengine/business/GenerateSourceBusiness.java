@@ -287,7 +287,7 @@ public class GenerateSourceBusiness {
              printWriter.println("import java.util.Optional;");
              printWriter.println("import org.springframework.data.domain.Pageable;");
              printWriter.println("import org.springframework.data.domain.PageRequest;");
-             if(table.getAttributeList().stream().filter(f -> Utils.getType(f.getType()).equals("Date")).count() >0){
+             if(table.getAttributeList().stream().anyMatch(f -> Utils.getType(f.getType()).equals("Date"))){
                  printWriter.println("import java.util.Date;");
              }
              printWriter.println();

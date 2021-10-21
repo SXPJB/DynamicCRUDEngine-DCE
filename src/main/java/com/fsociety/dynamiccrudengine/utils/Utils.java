@@ -22,7 +22,7 @@ public class Utils {
         if (!folderArchvo.exists()) {
             folderArchvo.mkdirs();
         }
-        String finalpath = obtenerRutaPorServidor() + basepath + normalizer(filename);
+        String finalpath = obtenerRutaPorServidor() + basepath + filename;
         final File file = new File(finalpath);
         try (OutputStream out = new FileOutputStream(file)) {
             IOUtils.copy(in, out);
