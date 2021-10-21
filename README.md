@@ -3,7 +3,7 @@
 > ## What is Dynamic CRUD Engine?
 >> Dynamic CRUD Engine is a development tool which allows  atack a problem of the software development, which is, repetitive code, since when you create a new software project, time is lost in the creation of the same operation for the management of a catalog of database. In our hypothesis we consider that it is possible to make a system which produce functional code from a database diagram in a semi-automatically way. In this project it is proposed to construct a coding architecture, to carry out a software development to optimize time in the construction and have a tool that produces functional code from a database.
 
->>## Minimum requirements:
+>## Minimum requirements:
 >>1. JDK 8
 >>2. Windows 10 or superior or Linux (ubuntu,debian,mint,etc)
 >>3. Mysql Server 8 or superior <br>
@@ -23,7 +23,7 @@
 >> ![alt Main Panel-DCE-Dynamic CRUD Engine](https://snz04pap001files.storage.live.com/y4mLpGKZR9mNM3zo1EjhXHemgjl4HMqXL9ybi4NqSL4GHFfNWjZTBI0HxEMreT0fO6soVz2Qy_GAHHHt7Cgv19urR5L-nh2mTck_D3gLiuraPXRQWNWZSWn8bTAa8HNjqQkekFt7T0zF17rM6M9VIAD9Dxzdq6iky0I7D-hmOzEUJX8MCoFYDGtwE46EkQi5Ymp?width=598&height=747&cropmode=none)
 >> ### Database connection panel
 >> ![alt  Database connection panel-DCE-Dynamic CRUD Engine](https://snz04pap001files.storage.live.com/y4m7PPhHdNWhmiBKFR8TdY9Miz-jrljSYF7ezPxG36m4REsC_mUpqTbebFZHqjGjxe2HEgsH6Ak4ozRr3DzHw97_74Qb28c-8mFFUwAdgkYOFVWjWTmP0e7pdwf0O13nUSW2-gaJGPB7H5aetyqvUdKBffOnmqiC2grawn3W9-Cw8OiOB8PE4lE8GGZU4Qua3qA?width=596&height=748&cropmode=none)
->> ###Table selection panel
+>> ### Table selection panel
 >> ![alt Table selection panel-DCE-Dynamic CRUD Engine](https://snz04pap001files.storage.live.com/y4mR5fzarqOxNAwykQPnqowuye_uNyt01nO7ab020Y-xYSOQ2UPKQFFH3rZ19rfJCiaQYGt2EonwFJLcOqKJXxD5HSwUxqkXv_-g6w9XIThSYOeC9GwsaNzdUrQYCivA5PcrwDCfXUsYPjr8kP9jMmF0961cijCignOPvO-ryKJJN1GjboxMCWAggLALbW0oyRQ?width=596&height=748&cropmode=none)
 
 >## Paper
