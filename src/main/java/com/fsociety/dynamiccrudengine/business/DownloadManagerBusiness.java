@@ -30,6 +30,7 @@ public class DownloadManagerBusiness {
                     "tmp" + File.separator + nameFile, Utils.obtenerRutaPorServidor()
                     + "tmp/" + project.getNameProject());
         } catch (Exception e){
+            e.printStackTrace();
             throw new Exception(e);
         }
     }

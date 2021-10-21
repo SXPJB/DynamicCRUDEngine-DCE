@@ -25,8 +25,7 @@ public class DataBaseConnectionBusiness {
                 throw new SQLException("Error en la conexcion");
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage() +
-                            " \nverficar sus datos",
+            JOptionPane.showMessageDialog(null, " \nverficar sus datos",
                     "Error de conexcion",
                     JOptionPane.ERROR_MESSAGE);
         }

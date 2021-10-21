@@ -167,10 +167,10 @@ public class InitialWindowView extends JFrame implements ActionListener {
                  UIManager.put("OptionPane.background",Constant.backgroundColor);
                  UIManager.put("Panel.background",Constant.backgroundColor);
                  UIManager.put("OptionPane.messageForeground",Constant.colorFont);
-                 int intput=JOptionPane.showOptionDialog(this,"¿Esta seguro de conitnuar?\n Está acción no se puede revertir", "Cuadro de confirmacion",
+                 int input=JOptionPane.showOptionDialog(this,"¿Esta seguro de conitnuar?\n Está acción no se puede revertir", "Cuadro de confirmacion",
                          JOptionPane.YES_NO_OPTION,
                          JOptionPane.QUESTION_MESSAGE,null,new Object[]{"Si","No"},"Si");
-                 if(intput== JOptionPane.YES_OPTION){
+                 if(input== JOptionPane.YES_OPTION){
                      try {
                          downloadManagerController.downloadProjectZip(
                                  new Project(nameProjectTextField.getText().replace(" ",""), groupIdTextField.getText().replace(" ",""),

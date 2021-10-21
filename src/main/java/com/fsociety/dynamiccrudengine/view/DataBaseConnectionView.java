@@ -33,7 +33,7 @@ public class DataBaseConnectionView extends JFrame implements ActionListener {
         titleLabel.setForeground(Constant.colorFont);
         titleLabel.setBounds(100, 38, 400, 43);
         subTitleLabel = new JLabel();
-        subTitleLabel.setText("Conexción a base de datos");
+        subTitleLabel.setText("Conexión a base de datos");
         subTitleLabel.setFont(Constant.fontSubtitle);
         subTitleLabel.setForeground(Constant.colorFont);
         subTitleLabel.setBounds(147, 109, 300, 30);

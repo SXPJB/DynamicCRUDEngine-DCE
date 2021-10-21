@@ -22,7 +22,7 @@ public class Utils {
         if (!folderArchvo.exists()) {
             folderArchvo.mkdirs();
         }
-        String finalpath = obtenerRutaPorServidor() + basepath + normalizer(filename);
+        String finalpath = obtenerRutaPorServidor() + basepath + filename;
         final File file = new File(finalpath);
         try (OutputStream out = new FileOutputStream(file)) {
             IOUtils.copy(in, out);
@@ -203,7 +203,7 @@ public class Utils {
                 type.equals("TINYTEXT") || type.equals("BLOB") ||
                 type.equals("TEXT") || type.equals("MEDIUMBLOB") ||
                 type.equals("MEDIUMTEXT") || type.equals("LONGBLOB") ||
-                type.equals("LONGTEX") || type.equals("ENUM") ||
+                type.equals("LONGTEXT") || type.equals("ENUM") ||
                 type.equals("LONGVARCHAR")) {
             typeDataJava = "String";
         }

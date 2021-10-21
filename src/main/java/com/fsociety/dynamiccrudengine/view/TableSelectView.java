@@ -51,10 +51,10 @@ public class TableSelectView extends JFrame implements ActionListener {
         subTitleLabel.setForeground(Constant.colorFont);
         subTitleLabel.setBounds(210, 101, 200, 30);
         titleTableLabel=new JLabel();
-        titleTableLabel.setText("La sigueintes tablas no se puede generar su CRUD");
+        titleTableLabel.setText("En las siguientes tablas no se puede generar el CRUD");
         titleTableLabel.setFont(Constant.fontLabels);
         titleTableLabel.setForeground(Constant.colorFont);
-        titleTableLabel.setBounds(76,150,450,30);
+        titleTableLabel.setBounds(60,150,550,30);
 
         selectButton=new JButton();
         selectButton.setText("Seleccionar");
@@ -77,10 +77,10 @@ public class TableSelectView extends JFrame implements ActionListener {
         scrollPane1.setBounds(25,184,550,110);
 
         titleTable2Label=new JLabel();
-        titleTable2Label.setText("Seleccione las tablas que desa realizar su CRUD");
+        titleTable2Label.setText("Seleccione las tablas de las que desea realizar el CRUD");
         titleTable2Label.setFont(Constant.fontLabels);
         titleTable2Label.setForeground(Constant.colorFont);
-        titleTable2Label.setBounds(100,342,450,30);
+        titleTable2Label.setBounds(60,342,550,30);
 
         //ScrollPanel for table two
         jTableAvailable=availableTables();
